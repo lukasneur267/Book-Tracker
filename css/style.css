@@ -1,0 +1,21 @@
+body {
+  background-color: rgba(54, 54, 158, 0.5);
+}
+
+/* styling the welcome section */
+.hero-image {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../images/books.jpg");
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
