@@ -1,3 +1,5 @@
+// --------VARIABLES---------------
+// add books
 let books = [
   {
     name: "Lord of the Rings",
@@ -42,13 +44,32 @@ let books = [
     rating: 0,
   },
 ];
-console.log(books);
 
-let result = document.getElementById("result");
-console.log(result);
+// section to hold all the cards
+let cardHolderSection = document.getElementById("cardHolderSection");
 
-books.forEach((book) => {
-  result.innerHTML += `
+// add functionality to the sorting button
+let sortingBtn = document.getElementById("sortingBtn");
+sortingBtn.addEventListener("click", sortCards);
+
+// --------FUNCTIONS---------------
+function generateCards(bookList) {
+  // generate cards dynamically
+  // this function is called when loading the page and when the sorting button is clicked
+
+  bookList.forEach((book) => {
+    // generate one card for each book
+    // set start color before first click (required for sorting function)
+    let ratingColor;
+    if (book.rating <= 3) {
+      ratingColor = "bg-danger";
+    } else if (book.rating <= 7) {
+      ratingColor = "bg-warning";
+    } else {
+      ratingColor = "bg-success";
+    }
+
+    cardHolderSection.innerHTML += `
     <div class="col">
           <div class="card my-3">
             <img src="./images/${book.image}" class="card-img-top" alt="${book.name}" />
@@ -58,11 +79,66 @@ books.forEach((book) => {
               <div
                 class="rating-container d-flex justify-content-around align-items-center"
               >
-                <p class="card-rating bg-danger rounded m-0 p-2 fs-1.5">${book.rating}/10</p>
-                <a href="#" class="btn btn-primary">Rate +1</a>
+                <p class="cardRating ${ratingColor} rounded m-0 p-2 fs-1.5">${book.rating}/10</p>
+                <a class="btn btn-primary ratingBtn">Rate +1</a>
               </div>
             </div>
           </div>
         </div>
     `;
-});
+  });
+}
+
+function addRatingFunctionality() {
+  // add functionality to the rating buttons
+  // this is executed after the cards were generated
+
+  let ratingBtns = document.querySelectorAll(".ratingBtn");
+
+  ratingBtns.forEach((btn, index) => {
+    btn.addEventListener("click", function () {
+      if (books[index].rating < 10) {
+        // implement logic
+        books[index].rating++;
+        // update ROM
+        let ratingsNum = document.querySelectorAll(".cardRating")[index];
+        // update number on page
+        ratingsNum.innerHTML = `${books[index].rating}/10`;
+        if (books[index].rating <= 3) {
+          document
+            .querySelectorAll(".cardRating")
+            [index].classList.add("bg-danger");
+        } else if (books[index].rating <= 7) {
+          document
+            .querySelectorAll(".cardRating")
+            [index].classList.replace("bg-danger", "bg-warning");
+        } else {
+          document
+            .querySelectorAll(".cardRating")
+            [index].classList.replace("bg-warning", "bg-success");
+        }
+      } else {
+        alert("Maximum rating reached!");
+      }
+    });
+  });
+}
+
+function sortCards() {
+  // sort cards in ascending order of ratings
+  let newBookOrder = books.sort(function (a, b) {
+    return a.rating - b.rating;
+  });
+  console.log(newBookOrder);
+
+  // reset card container (result)
+  cardHolderSection.innerHTML = "";
+
+  generateCards(newBookOrder);
+  addRatingFunctionality();
+}
+
+// --------MAIN---------------
+// initialize book list when loading the page
+generateCards(books);
+addRatingFunctionality();
