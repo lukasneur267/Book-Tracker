@@ -100,7 +100,7 @@ function addRatingFunctionality() {
       if (books[index].rating < 10) {
         // implement logic
         books[index].rating++;
-        // update ROM
+        // update DOM
         let ratingsNum = document.querySelectorAll(".cardRating")[index];
         // update number on page
         ratingsNum.innerHTML = `${books[index].rating}/10`;
